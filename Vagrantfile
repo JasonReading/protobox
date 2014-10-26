@@ -49,7 +49,7 @@ end
 # Check if protobox boot file exists, if it doesn't create it here
 if !File.file?(protobox_boot)
   File.open(protobox_boot, 'w') do |file|
-    file.write('data/config/common.yml')
+    file.write('../config/protobox.yml')
   end
 end
 
@@ -229,7 +229,7 @@ Vagrant.configure("2") do |config|
     if (ansible['playbook'] == "default" or ansible['playbook'] == "ansible/site.yml") and playbook
       playbook_path = "/vagrant/.protobox/playbook"
     else
-      playbook_path = "/vagrant/" + ansible['playbook']
+      playbook_path = "/srv/www/" + ansible['playbook']
     end
 
     params = Array.new
@@ -256,7 +256,7 @@ Vagrant.configure("2") do |config|
     end
 
     extra_vars['protobox_env'] = "vagrant"
-    extra_vars['protobox_config'] = "/vagrant/" + vagrant_file
+    extra_vars['protobox_config'] = "/srv/www/protobox/" + vagrant_file
 
     params << "--extra-vars=\\\"" + extra_vars.map{|k,v| "#{k}=#{v}"}.join(" ").gsub("\"","\\\\\"") + "\\\"" unless extra_vars.empty?
 
